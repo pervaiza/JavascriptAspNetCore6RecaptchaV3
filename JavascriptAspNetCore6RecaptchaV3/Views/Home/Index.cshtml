@@ -1,0 +1,49 @@
+﻿@using Microsoft.Extensions.Options
+@model JavascriptAspNetCore6RecaptchaV3.Models.NewUser
+@inject IOptions<JavascriptAspNetCore6RecaptchaV3.Models.GoogleReCaptcha> googleReCaptcha
+
+<script src="https://www.google.com/recaptcha/api.js?render=@googleReCaptcha.Value.SiteKey"></script>
+<script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('@googleReCaptcha.Value.SiteKey', { action: 'submit' }).then(function (token) {
+            document.getElementById("RecaptchaToken").value = token;
+        });
+    });
+</script>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+<h4>New User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form id="form-newuser" asp-action="Index">
+            <input type="hidden" asp-for="RecaptchaToken" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            <div class="row">
+                <div class="message"></div>
+            </div>
+        </form>
+    </div>
+</div>
